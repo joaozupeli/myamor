@@ -10,24 +10,13 @@ export function getLenis() {
   return lenis
 }
 
-export function startSmoothScroll(reduced: boolean) {
-  if (reduced) {
-    const update = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      const progress = max <= 0 ? 0 : window.scrollY / max
-      setScrollSample(progress, 0)
-    }
-    update()
-    window.addEventListener("scroll", update, { passive: true })
-    return () => window.removeEventListener("scroll", update)
-  }
-
+export function startSmoothScroll() {
   const next = new Lenis({
-    lerp: 0.065,
+    lerp: 0.1,
     smoothWheel: true,
     syncTouch: true,
-    wheelMultiplier: 0.32,
-    touchMultiplier: 0.55,
+    wheelMultiplier: 0.9,
+    touchMultiplier: 1,
     autoRaf: false,
   })
   lenis = next

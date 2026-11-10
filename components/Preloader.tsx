@@ -54,19 +54,18 @@ export function Preloader({ onStart }: { onStart: () => void }) {
       setGone(true);
       return;
     }
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timeline = gsap.timeline({ onComplete: () => setGone(true) });
     timeline.to(bud, {
-      scale: reduced ? 1.2 : 7,
+      scale: 7,
       opacity: 0,
-      duration: reduced ? 0.35 : 1.35,
+      duration: 1.35,
       ease: "power3.inOut",
     });
     timeline.to(root, {
       opacity: 0,
-      duration: reduced ? 0.35 : 0.9,
+      duration: 0.9,
       ease: "power2.inOut",
-    }, reduced ? 0 : 0.35);
+    }, 0.35);
   };
 
   if (gone) return null;

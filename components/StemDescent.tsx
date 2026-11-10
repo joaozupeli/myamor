@@ -17,14 +17,12 @@ export function StemDescent({ heroRef }: { heroRef: RefObject<HTMLElement | null
       path.style.strokeDashoffset = `${length}`;
     });
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: hero,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: true,
       },
     });
     paths.forEach((path) => {

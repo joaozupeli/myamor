@@ -43,9 +43,6 @@ export function FinalLetter() {
     const heart = section.querySelector("[data-heart]");
     const button = buttonRef.current;
     const dim = dimRef.current;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduced) return;
 
     const pieces = [heart, ...lines, signature, ending, button].filter(Boolean);
     const tweens = pieces.map((piece) =>
@@ -107,7 +104,7 @@ export function FinalLetter() {
   };
 
   return (
-    <section ref={sectionRef} className="relative z-[4] px-6 py-[18vh]">
+    <section ref={sectionRef} className="relative z-[4] px-5 pt-16 pb-32 sm:px-6 sm:py-[18vh]">
       <div ref={dimRef} className="pointer-events-none fixed inset-0 -z-10 bg-[#050308] opacity-0" />
       <div className="mx-auto flex max-w-[40rem] flex-col items-center text-center">
         <div data-heart className="relative mb-10">

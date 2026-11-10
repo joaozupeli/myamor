@@ -38,15 +38,13 @@ export function Chapter({ chapter, index }: { chapter: ChapterContent; index: nu
     const date = root.querySelector("[data-date]");
     const title = root.querySelector("[data-title]");
     const split = splitWords(text);
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return () => split.restore();
 
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: root,
         start: "top 82%",
         end: "top 28%",
-        scrub: 0.65,
+        scrub: true,
       },
     });
     if (date) timeline.from(date, { opacity: 0, y: 12, duration: 0.2 }, 0.15);
@@ -62,6 +60,7 @@ export function Chapter({ chapter, index }: { chapter: ChapterContent; index: nu
   }, [chapter.text]);
 
   const lean = (event: PointerEvent<HTMLButtonElement>) => {
+    if (event.pointerType !== "mouse") return;
     const rect = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;
@@ -77,17 +76,17 @@ export function Chapter({ chapter, index }: { chapter: ChapterContent; index: nu
   return (
     <article ref={rootRef} className="memory relative">
       <DownRoot />
-      <div className="grid items-center gap-10 py-[18vh] pr-5 pl-12 md:min-h-[100svh] md:grid-cols-[minmax(0,1fr)_10rem_minmax(0,1fr)] md:gap-8 md:px-10">
-      <div className={`copy relative z-[1] md:row-start-1 ${side === "left" ? "md:col-start-3" : "md:col-start-1"}`}>
-        <p data-date className="font-sans text-[0.72rem] tracking-[0.38em] text-[#E8C39E] uppercase">
+      <div className="grid min-w-0 items-center gap-8 py-16 pr-4 pl-11 sm:py-24 lg:min-h-[100svh] lg:grid-cols-[minmax(0,1fr)_8rem_minmax(0,1fr)] lg:gap-6 lg:px-8 lg:py-[16vh]">
+      <div className={`copy relative z-[1] min-w-0 lg:row-start-1 ${side === "left" ? "lg:col-start-3" : "lg:col-start-1"}`}>
+        <p data-date className="font-sans text-[0.72rem] tracking-[0.28em] text-[#E8C39E] uppercase sm:tracking-[0.38em]">
           {chapter.date}
         </p>
-        <h2 data-title className="mt-4 max-w-[12ch] font-display text-[clamp(2.7rem,8vw,5.3rem)] leading-[0.9] font-medium tracking-[-0.04em] text-[#F3ECE6]">
+        <h2 data-title className="mt-4 max-w-full font-display text-[clamp(2.15rem,10vw,5.3rem)] leading-[0.92] font-medium tracking-[-0.04em] text-balance text-[#F3ECE6] lg:max-w-[12ch]">
           {chapter.title}
         </h2>
         <p
           ref={textRef}
-          className="mt-6 max-w-[38rem] font-sans text-[1.05rem] leading-[1.8] font-light text-[rgba(243,236,230,0.78)] md:text-[1.12rem]"
+          className="mt-6 max-w-[38rem] font-sans text-[1rem] leading-[1.7] font-light text-[rgba(243,236,230,0.78)] sm:text-[1.05rem] sm:leading-[1.8] lg:text-[1.12rem]"
         >
           {chapter.text}
         </p>
@@ -95,7 +94,7 @@ export function Chapter({ chapter, index }: { chapter: ChapterContent; index: nu
       <button
         ref={cardRef}
         type="button"
-        className={`photo memory-card relative z-[1] md:row-start-1 ${side === "left" ? "md:col-start-1" : "md:col-start-3"} ${open ? "is-open" : ""}`}
+        className={`photo memory-card relative z-[1] w-full min-w-0 max-w-full lg:row-start-1 ${side === "left" ? "lg:col-start-1" : "lg:col-start-3"} ${open ? "is-open" : ""}`}
         style={{ "--glow": glow } as CSSProperties}
         aria-pressed={open}
         aria-label={open ? "Voltar para a foto" : "Virar a foto e ler o verso"}
@@ -146,16 +145,12 @@ export function Interlude({ text }: { text: string }) {
     const block = ref.current;
     if (!block) return;
     const line = block.querySelector("[data-phrase]");
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      if (line) (line as HTMLElement).style.opacity = "1";
-      return;
-    }
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: block,
         start: "top 86%",
         end: "top 10%",
-        scrub: 0.65,
+        scrub: true,
       },
     });
     if (line) {
@@ -169,8 +164,8 @@ export function Interlude({ text }: { text: string }) {
   }, [text]);
 
   return (
-    <div ref={ref} className="relative px-6 py-[14vh] text-center">
-      <p data-phrase className="font-display text-[clamp(3.2rem,12vw,7.5rem)] leading-none font-medium tracking-[-0.045em] text-[#F3ECE6] italic opacity-0">
+    <div ref={ref} className="relative px-5 py-16 text-center sm:py-[14vh]">
+      <p data-phrase className="mx-auto max-w-[92vw] font-display text-[clamp(2.15rem,9vw,7.5rem)] leading-[0.95] font-medium tracking-[-0.045em] text-balance text-[#F3ECE6] italic opacity-0">
         {text}
       </p>
     </div>

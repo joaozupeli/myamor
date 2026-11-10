@@ -68,7 +68,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     >
       <body>
         <Script id="motion-flag" strategy="beforeInteractive">
-          {`document.documentElement.classList.add("js");try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("reduced")}}catch(e){}`}
+          {`document.documentElement.classList.add("js");`}
         </Script>
         <noscript>
           <style>{`.word,.hero-letter,.hero-sub,.letter-line,.final-fade,.date-line,.interlude,.branch-node,.stem,.descent-line{opacity:1!important;filter:none!important;transform:none!important}`}</style>

@@ -9,37 +9,20 @@ export type Quality = {
 }
 
 export function detectQuality(): Quality {
-  const nav = navigator as Navigator & {
-    deviceMemory?: number
-    connection?: { saveData?: boolean }
-  }
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  const nav = navigator as Navigator & { deviceMemory?: number }
   const mobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 820
-  const cores = navigator.hardwareConcurrency ?? 4
-  const memory = nav.deviceMemory ?? 4
-  const saveData = Boolean(nav.connection?.saveData)
-  const weak = saveData || cores <= 2 || memory <= 2
+  const cores = navigator.hardwareConcurrency ?? 8
+  const memory = nav.deviceMemory ?? 8
+  const tight = mobile || cores <= 4 || memory <= 4
 
-  if (reduced || weak) {
-    return {
-      showWebgl: false,
-      bloom: false,
-      dpr: 1,
-      lite: true,
-      particles: reduced ? 8 : 16,
-      petals: 16,
-      reduced,
-    }
-  }
-
-  if (mobile || memory <= 4 || cores <= 4) {
+  if (tight) {
     return {
       showWebgl: true,
       bloom: false,
-      dpr: 1.5,
+      dpr: Math.min(1.5, window.devicePixelRatio || 1),
       lite: true,
-      particles: 28,
-      petals: 24,
+      particles: mobile ? 24 : 36,
+      petals: mobile ? 18 : 28,
       reduced: false,
     }
   }
@@ -47,7 +30,7 @@ export function detectQuality(): Quality {
   return {
     showWebgl: true,
     bloom: true,
-    dpr: Math.min(2, window.devicePixelRatio || 1),
+    dpr: Math.min(1.75, window.devicePixelRatio || 1),
     lite: false,
     particles: 60,
     petals: 42,

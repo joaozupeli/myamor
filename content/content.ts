@@ -169,10 +169,12 @@ export const content = {
   ],
   finalLetter: [
     "Eu te amo. Eu sempre te amei.",
+    "Não foi um dia só. Foi cada vez que eu te olhei e escolhi ficar.",
     "Independente do que aconteça ao longo das nossas vidas, eu quero estar com você para todo o sempre.",
-    "Porque essa foi a minha escolha.",
+    "Porque essa foi a minha escolha. E eu escolheria você de novo.",
     "Eu quero viver ao seu lado até o último suspiro.",
     "Quero realizar todos os nossos desejos e criar a nossa família.",
+    "Se o mundo inteiro mudar, o meu lugar continua sendo o seu.",
   ],
 }
 

@@ -36,13 +36,14 @@ export function Experience() {
 
   useEffect(() => {
     if (!started) return;
-    return startSmoothScroll(quality?.reduced ?? false);
-  }, [started, quality?.reduced]);
+    return startSmoothScroll();
+  }, [started]);
 
   useEffect(() => {
-    if (!started || quality?.reduced) return;
+    if (!started) return;
     const root = document.documentElement;
     const move = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") return;
       const x = (event.clientX / window.innerWidth) * 2 - 1;
       const y = (event.clientY / window.innerHeight) * 2 - 1;
       root.style.setProperty("--pointer-x", x.toFixed(3));
@@ -51,7 +52,7 @@ export function Experience() {
     };
     window.addEventListener("pointermove", move);
     return () => window.removeEventListener("pointermove", move);
-  }, [started, quality?.reduced]);
+  }, [started]);
 
   useEffect(() => {
     if (!started) return;
@@ -63,10 +64,6 @@ export function Experience() {
     const wash = washRef.current;
     const hero = heroRef.current;
     if (!started || !wash || !hero) return;
-    if (quality?.reduced) {
-      wash.style.opacity = "1";
-      return;
-    }
     const tween = gsap.to(wash, {
       opacity: 1,
       ease: "none",
@@ -74,14 +71,14 @@ export function Experience() {
         trigger: hero,
         start: "35% top",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: true,
       },
     });
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
     };
-  }, [started, quality?.reduced]);
+  }, [started]);
 
   const begin = () => {
     startStorySound(content.music);
@@ -98,11 +95,11 @@ export function Experience() {
         style={{ background: "radial-gradient(130% 90% at 50% 115%, #2A0A14 0%, #14070C 40%, #07060A 74%)" }}
       />
       <GrainOverlay />
-      {started && !quality?.reduced ? <div className="pointer-light" /> : null}
+      {started ? <div className="pointer-light" /> : null}
       {quality ? <Particles count={quality.particles} /> : null}
       <Preloader onStart={begin} />
       <main className="relative z-[2]">
-        <section ref={heroRef} className={quality?.reduced ? "relative h-[100svh]" : "relative h-[230svh]"}>
+        <section ref={heroRef} className="relative h-[230svh]">
           <div className="sticky top-0 h-[100svh] overflow-hidden">
             <RoseHero started={started} heroRef={heroRef} quality={quality} />
             <StemDescent heroRef={heroRef} />

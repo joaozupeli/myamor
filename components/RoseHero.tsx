@@ -79,8 +79,6 @@ export function RoseHero({
     const title = titleRef.current;
     if (!started || !title) return;
     const split = splitLetters(title);
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return () => split.restore();
 
     const blur = quality?.bloom ? "blur(14px)" : "blur(0px)";
     const titleTween = gsap.fromTo(split.letters, {
@@ -111,14 +109,13 @@ export function RoseHero({
     const visual = visualRef.current;
     const copy = copyRef.current;
     if (!started || !hero || !visual || !copy) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: hero,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: true,
         onUpdate: (self) => {
           const delayed = Math.max(0, (self.progress - 0.22) / 0.78);
           depthRef.current = delayed * delayed * (3 - 2 * delayed);
@@ -137,7 +134,7 @@ export function RoseHero({
   }, [heroRef, started]);
 
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (motion.orientation) return;
+    if (event.pointerType !== "mouse" || motion.orientation) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
     const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
@@ -168,8 +165,8 @@ export function RoseHero({
           </RoseBoundary>
         ) : null}
       </div>
-      <div ref={copyRef} className="absolute inset-x-0 bottom-[8vh] z-[4] px-6 text-center">
-        <h1 ref={titleRef} className="hero-title font-display text-[clamp(3.4rem,13vw,8.4rem)] leading-[0.86] font-medium tracking-[-0.045em] text-[#F3ECE6]">
+      <div ref={copyRef} className="absolute inset-x-0 bottom-[max(5.5rem,7vh)] z-[4] px-5 text-center">
+        <h1 ref={titleRef} className="hero-title font-display text-[clamp(2.4rem,12vw,8.4rem)] leading-[0.86] font-medium tracking-[-0.045em] text-[#F3ECE6]">
           {content.title}
         </h1>
         <p ref={subRef} className="hero-sub mx-auto mt-5 max-w-[18rem] font-display text-[clamp(1.25rem,3.4vw,1.85rem)] leading-snug font-medium italic text-[rgba(243,236,230,0.72)] md:max-w-md">

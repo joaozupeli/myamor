@@ -19,6 +19,8 @@ html {
   scrollbar-width: none;
   scroll-behavior: auto;
   overscroll-behavior: none;
+  touch-action: pan-y;
+  max-width: 100%;
 }
 
 html.story-locked,
@@ -32,12 +34,14 @@ html::-webkit-scrollbar { display: none; }
 body {
   margin: 0;
   min-height: 100svh;
+  max-width: 100%;
   background: #07060a;
   color: #f3ece6;
   font-family: var(--font-sans), "Helvetica Neue", sans-serif;
   font-weight: 300;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  touch-action: pan-y;
 }
 
 ::selection {
@@ -46,6 +50,10 @@ body {
 }
 
 button, a { font: inherit; color: inherit; }
+
+main, section, article {
+  touch-action: pan-y;
+}
 
 :focus-visible {
   outline: 1px solid #e8c39e;
@@ -281,10 +289,10 @@ em, .is-italic { font-style: italic; }
 
 .hero-title {
   margin: 0 auto;
-  max-width: 9ch;
+  max-width: min(9ch, 100%);
   font-family: var(--font-display), "Times New Roman", serif;
   font-weight: 500;
-  font-size: clamp(3.4rem, 15vw, 8.4rem);
+  font-size: clamp(2.4rem, 12vw, 8.4rem);
   line-height: 0.86;
   letter-spacing: -0.04em;
 }
@@ -648,12 +656,13 @@ html.reduced .scroll-hint span { animation: none; }
 }
 
 .ghost-button {
+  max-width: calc(100vw - 2.5rem);
   border: 1px solid rgba(232, 195, 158, 0.45);
   background: transparent;
   color: #f3ece6;
   padding: 0.9rem 1.5rem;
   font-size: 0.72rem;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
@@ -698,12 +707,14 @@ html.reduced .scroll-hint span { animation: none; }
 .memory-card {
   display: block;
   width: 100%;
+  max-width: 100%;
   border: 0;
   padding: 0;
   background: none;
   color: inherit;
   cursor: pointer;
   perspective: 1400px;
+  touch-action: pan-y;
   --tilt-x: 0deg;
   --tilt-y: 0deg;
 }
@@ -755,7 +766,7 @@ html.reduced .scroll-hint span { animation: none; }
   transform: rotateY(180deg);
 }
 
-html.reduced .memory-tilt { transition: none; }
+html.reduced .memory-tilt { transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
 
 .sound-bar {
   display: block;
@@ -780,12 +791,21 @@ html.reduced .memory-tilt { transition: none; }
   50% { transform: scaleY(1); }
 }
 
-html.reduced .breathe,
-html.reduced .hint-line,
-html.reduced .grain,
-html.reduced .sound-bar { animation: none; }
-
-@media (max-width: 380px) {
-  .letter-line { font-size: 1.18rem; }
-  .letter { gap: 0.32rem; }
+@media (max-width: 720px) {
+  .hero-title { font-size: clamp(2.35rem, 13vw, 3.6rem); }
+  .hero-sub { font-size: 1.12rem; max-width: 18rem; }
+  .descent-line {
+    top: 66%;
+    width: min(16rem, 88vw);
+    font-size: clamp(1.4rem, 6.4vw, 2rem);
+  }
+  .ghost-button {
+    letter-spacing: 0.14em;
+    padding: 0.85rem 1rem;
+  }
+  .memory-tilt {
+    box-shadow:
+      0 16px 32px color-mix(in srgb, var(--glow, #c45a68) 45%, transparent),
+      0 0 18px color-mix(in srgb, var(--glow, #c45a68) 28%, transparent);
+  }
 }
