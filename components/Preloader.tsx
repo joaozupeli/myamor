@@ -99,9 +99,14 @@ export function Preloader({ onStart }: { onStart: () => void }) {
         {content.preloaderLine}
       </p>
       {ready ? (
-        <button type="button" className="ghost-button mt-8" onClick={begin}>
-          {content.startLabel}
-        </button>
+        <>
+          <button type="button" className="ghost-button mt-8" onClick={begin}>
+            {content.startLabel}
+          </button>
+          <p className="mt-5 font-sans text-[0.68rem] tracking-[0.28em] text-[#E8C39E] uppercase">
+            {content.volumeHint}
+          </p>
+        </>
       ) : (
         <div className="mt-8 h-px w-28 bg-[rgba(232,195,158,0.25)]" aria-hidden="true">
           <div className="h-px bg-[#E8C39E]" style={{ width: `${Math.round(progress * 100)}%` }} />

@@ -45,19 +45,21 @@ export function FinalLetter() {
     const dim = dimRef.current;
 
     const pieces = [heart, ...lines, signature, ending, button].filter(Boolean);
-    const tweens = pieces.map((piece) =>
-      gsap.from(piece, {
-        opacity: 0,
-        y: 26,
-        duration: 0.9,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: piece,
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-      }),
-    );
+    const reveal = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%",
+        toggleActions: "play none none none",
+      },
+    });
+    pieces.forEach((piece, index) => {
+      reveal.from(piece, {
+        y: 22,
+        duration: 1.15,
+        ease: "power3.out",
+        immediateRender: false,
+      }, index * 0.28);
+    });
     const zone = gsap.timeline({
       scrollTrigger: {
         trigger: section,
@@ -83,10 +85,8 @@ export function FinalLetter() {
     }
 
     return () => {
-      tweens.forEach((tween) => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
-      });
+      reveal.scrollTrigger?.kill();
+      reveal.kill();
       zone.scrollTrigger?.kill();
       zone.kill();
       motion.finale = 0;
@@ -115,15 +115,15 @@ export function FinalLetter() {
           </svg>
           <div ref={orbRef} className="h-[min(22vw,120px)] w-[min(22vw,120px)] rounded-full bg-[radial-gradient(circle,rgba(255,246,234,0.95)_0%,rgba(255,208,168,0.85)_10%,#FF3B55_30%,rgba(200,16,46,0.28)_54%,transparent_70%)] shadow-[0_0_40px_rgba(255,59,85,0.45),0_0_120px_rgba(232,195,158,0.22)]" />
         </div>
-        <p data-line className="max-w-[34rem] font-display text-[clamp(1.45rem,3.6vw,2.15rem)] leading-snug font-medium text-balance text-[#E8C39E] italic">
-          {content.verse}
-        </p>
-        <p data-line className="mt-3 font-sans text-[0.68rem] tracking-[0.32em] text-[#E8C39E]/80 uppercase">
-          {content.verseRef}
-        </p>
-        <div className="mt-10 max-w-[36rem] space-y-6">
-          {content.finalLetter.map((line) => (
-            <p key={line} data-line className="font-display text-[clamp(1.25rem,3.2vw,1.9rem)] leading-[1.35] font-medium text-balance text-[#F3ECE6]">
+        <div className="mt-2 max-w-[36rem] space-y-7">
+          {content.finalLetter.map((line, index) => (
+            <p
+              key={line}
+              data-line
+              className={index === 0
+                ? "font-display text-[clamp(1.45rem,3.4vw,2.05rem)] leading-snug font-medium text-balance text-[#E8C39E] italic"
+                : "font-display text-[clamp(1.15rem,2.7vw,1.55rem)] leading-[1.55] font-medium text-balance text-[#F3ECE6]"}
+            >
               {line}
             </p>
           ))}

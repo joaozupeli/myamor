@@ -4,7 +4,6 @@ let analyser: AnalyserNode | null = null
 let pulseData = new Uint8Array(0)
 let muted = false
 let level = 0.82
-let pulseTimer = 0
 const listeners = new Set<(isMuted: boolean) => void>()
 
 function targetGain() {
@@ -45,56 +44,7 @@ export function startStorySound(src: string) {
   audio.preload = "auto"
   const source = context.createMediaElementSource(audio)
   source.connect(master)
-  void audio.play().catch(() => {
-    startPad()
-  })
-}
-
-function startPad() {
-  if (!context || !master) return
-  const filter = context.createBiquadFilter()
-  filter.type = "lowpass"
-  filter.frequency.value = 680
-  filter.connect(master)
-
-  const tone = (frequency: number, amount: number, type: OscillatorType) => {
-    if (!context) return
-    const osc = context.createOscillator()
-    const gain = context.createGain()
-    osc.type = type
-    osc.frequency.value = frequency
-    gain.gain.value = amount
-    osc.connect(gain)
-    gain.connect(filter)
-    osc.start()
-  }
-
-  tone(110, 0.04, "sine")
-  tone(164.81, 0.026, "sine")
-  tone(220, 0.01, "triangle")
-
-  const beat = () => {
-    thump(0)
-    thump(0.16)
-    pulseTimer = window.setTimeout(beat, 1180)
-  }
-  beat()
-}
-
-function thump(offset: number) {
-  if (!context || !master) return
-  const osc = context.createOscillator()
-  const gain = context.createGain()
-  const start = context.currentTime + offset
-  osc.type = "sine"
-  osc.frequency.setValueAtTime(48, start)
-  gain.gain.setValueAtTime(0.0001, start)
-  gain.gain.exponentialRampToValueAtTime(0.11, start + 0.02)
-  gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.24)
-  osc.connect(gain)
-  gain.connect(master)
-  osc.start(start)
-  osc.stop(start + 0.26)
+  void audio.play().catch(() => {})
 }
 
 export function setStoryLevel(next: number) {
@@ -126,6 +76,3 @@ export function getStoryPulse() {
   return sum / (bins * 255)
 }
 
-export function stopStoryClock() {
-  window.clearTimeout(pulseTimer)
-}

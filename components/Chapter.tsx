@@ -42,15 +42,13 @@ export function Chapter({ chapter, index }: { chapter: ChapterContent; index: nu
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: root,
-        start: "top 82%",
-        end: "top 28%",
-        scrub: true,
+        start: "top 85%",
+        toggleActions: "play none none none",
       },
     });
-    if (date) timeline.from(date, { opacity: 0, y: 12, duration: 0.2 }, 0.15);
-    if (title) timeline.from(title, { opacity: 0, y: 22, duration: 0.28 }, 0.2);
-    timeline.from(split.words, { opacity: 0, y: 14, stagger: 0.02, duration: 0.35 }, 0.28);
-    timeline.from(card, { opacity: 0, y: 28, duration: 0.4 }, 0.12);
+    if (date) timeline.from(date, { y: 12, duration: 0.6, immediateRender: false }, 0);
+    if (title) timeline.from(title, { y: 18, duration: 0.7, immediateRender: false }, 0.05);
+    timeline.from(split.words, { y: 10, stagger: 0.012, duration: 0.5, immediateRender: false }, 0.12);
 
     return () => {
       timeline.scrollTrigger?.kill();
@@ -76,12 +74,14 @@ export function Chapter({ chapter, index }: { chapter: ChapterContent; index: nu
   return (
     <article ref={rootRef} className="memory relative">
       <DownRoot />
-      <div className="grid min-w-0 items-center gap-8 py-16 pr-4 pl-11 sm:py-24 lg:min-h-[100svh] lg:grid-cols-[minmax(0,1fr)_8rem_minmax(0,1fr)] lg:gap-6 lg:px-8 lg:py-[16vh]">
-      <div className={`copy relative z-[1] min-w-0 lg:row-start-1 ${side === "left" ? "lg:col-start-3" : "lg:col-start-1"}`}>
-        <p data-date className="font-sans text-[0.72rem] tracking-[0.28em] text-[#E8C39E] uppercase sm:tracking-[0.38em]">
-          {chapter.date}
-        </p>
-        <h2 data-title className="mt-4 max-w-full font-display text-[clamp(2.15rem,10vw,5.3rem)] leading-[0.92] font-medium tracking-[-0.04em] text-balance text-[#F3ECE6] lg:max-w-[12ch]">
+      <div className="grid min-w-0 items-center gap-8 py-10 pr-4 pl-11 md:min-h-[100svh] md:grid-cols-[minmax(0,1fr)_6rem_minmax(0,1fr)] md:gap-6 md:px-8 md:py-[10vh]">
+      <div className={`copy relative z-[1] min-w-0 order-2 md:order-none md:row-start-1 ${side === "left" ? "md:col-start-3" : "md:col-start-1"}`}>
+        {chapter.date ? (
+          <p data-date className="font-sans text-[0.72rem] tracking-[0.28em] text-[#E8C39E] uppercase sm:tracking-[0.38em]">
+            {chapter.date}
+          </p>
+        ) : null}
+        <h2 data-title className="mt-4 max-w-full font-display text-[clamp(2.15rem,10vw,5.3rem)] leading-[0.92] font-medium tracking-[-0.04em] text-balance text-[#F3ECE6] md:max-w-[14ch]">
           {chapter.title}
         </h2>
         <p
@@ -94,7 +94,7 @@ export function Chapter({ chapter, index }: { chapter: ChapterContent; index: nu
       <button
         ref={cardRef}
         type="button"
-        className={`photo memory-card relative z-[1] w-full min-w-0 max-w-full lg:row-start-1 ${side === "left" ? "lg:col-start-1" : "lg:col-start-3"} ${open ? "is-open" : ""}`}
+        className={`photo memory-card relative z-[1] order-1 w-full min-w-0 max-w-full md:order-none md:row-start-1 ${side === "left" ? "md:col-start-1" : "md:col-start-3"} ${open ? "is-open" : ""}`}
         style={{ "--glow": glow } as CSSProperties}
         aria-pressed={open}
         aria-label={open ? "Voltar para a foto" : "Virar a foto e ler o verso"}
@@ -123,8 +123,7 @@ export function Chapter({ chapter, index }: { chapter: ChapterContent; index: nu
             </span>
           </span>
           <span className="memory-face memory-back" style={{ background: `linear-gradient(165deg, color-mix(in srgb, ${glow} 55%, #14070c), #07060a 72%)` }}>
-            <span className="font-sans text-[0.68rem] tracking-[0.32em] text-[#E8C39E] uppercase">{chapter.date}</span>
-            <span className="mt-4 font-display text-[clamp(1.8rem,4vw,2.6rem)] leading-tight text-[#F3ECE6]">
+            <span className="max-w-[16rem] font-display text-[clamp(1.25rem,3.2vw,1.7rem)] leading-snug text-balance text-[#F3ECE6]">
               {chapter.caption ?? chapter.title}
             </span>
             <span className="mt-6 font-sans text-[0.68rem] tracking-[0.28em] text-[rgba(243,236,230,0.7)] uppercase">

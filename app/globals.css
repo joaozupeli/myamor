@@ -746,6 +746,13 @@ html.reduced .scroll-hint span { animation: none; }
   transform: rotateX(var(--tilt-x)) rotateY(calc(180deg + var(--tilt-y)));
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .memory-card:hover .memory-tilt,
+  .memory-card:focus-visible .memory-tilt {
+    transform: rotateX(var(--tilt-x)) rotateY(calc(180deg + var(--tilt-y)));
+  }
+}
+
 .memory-face {
   position: absolute;
   inset: 0;
@@ -754,6 +761,7 @@ html.reduced .scroll-hint span { animation: none; }
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   background: #14070c;
+  transform: translateZ(1px);
 }
 
 .memory-back {
@@ -763,7 +771,7 @@ html.reduced .scroll-hint span { animation: none; }
   justify-content: center;
   padding: 1.6rem;
   text-align: center;
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
 }
 
 html.reduced .memory-tilt { transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -792,7 +800,10 @@ html.reduced .memory-tilt { transition: transform 0.7s cubic-bezier(0.22, 1, 0.3
 }
 
 @media (max-width: 720px) {
-  .hero-title { font-size: clamp(2.35rem, 13vw, 3.6rem); }
+  .hero-title {
+    max-width: 92vw;
+    font-size: clamp(2.5rem, 13vw, 3.8rem);
+  }
   .hero-sub { font-size: 1.12rem; max-width: 18rem; }
   .descent-line {
     top: 66%;

@@ -17,7 +17,7 @@ const roots = [
 export function DownRoot() {
   return (
     <svg
-      className="pointer-events-none absolute top-0 left-0 z-0 h-full w-11 lg:left-1/2 lg:w-32 lg:-translate-x-1/2"
+      className="pointer-events-none absolute top-0 left-0 z-0 h-full w-11 md:left-1/2 md:w-32 md:-translate-x-1/2"
       viewBox="0 0 200 800"
       preserveAspectRatio="none"
       fill="none"
