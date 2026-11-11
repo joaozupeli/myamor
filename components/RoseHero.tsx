@@ -27,6 +27,13 @@ class RoseBoundary extends Component<{ children: ReactNode; onFail: () => void }
   }
 }
 
+function heroTitleLines(title: string) {
+  const words = title.trim().split(/\s+/)
+  if (words.length < 2) return [title]
+  const last = words[words.length - 1]
+  return [words.slice(0, -1).join(" "), last]
+}
+
 function RoseDrawing() {
   const petals = [0, 45, 90, 135, 180, 225, 270, 315];
   return (
@@ -78,10 +85,12 @@ export function RoseHero({
   useLayoutEffect(() => {
     const title = titleRef.current;
     if (!started || !title) return;
-    const split = splitLetters(title);
+    const lines = Array.from(title.querySelectorAll<HTMLElement>("[data-title-line]"));
+    const splits = lines.map((line) => splitLetters(line));
+    const letters = splits.flatMap((split) => split.letters);
 
     const blur = quality?.bloom ? "blur(14px)" : "blur(0px)";
-    const titleTween = gsap.fromTo(split.letters, {
+    const titleTween = gsap.fromTo(letters, {
       opacity: 0,
       y: 16,
       filter: blur,
@@ -100,7 +109,7 @@ export function RoseHero({
     return () => {
       titleTween.kill();
       subTween?.kill();
-      split.restore();
+      splits.forEach((split) => split.restore());
     };
   }, [started, quality?.bloom]);
 
@@ -143,7 +152,7 @@ export function RoseHero({
 
   return (
     <div className="relative h-full w-full" onPointerMove={onPointerMove}>
-      <div ref={visualRef} className="absolute inset-x-0 top-0 h-[68%]">
+      <div ref={visualRef} className="absolute inset-x-0 top-0 h-[68%] [mask-image:linear-gradient(to_bottom,#000_68%,transparent_100%)]">
         <div className="absolute left-1/2 top-[58%] h-[78vw] max-h-[520px] w-[78vw] max-w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,59,85,0.42)_0%,rgba(200,16,46,0.16)_36%,rgba(232,195,158,0.05)_58%,transparent_72%)] blur-3xl" />
         <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ${live ? "opacity-0" : "opacity-100"}`}>
           <div className="breathe h-[min(78vw,520px)] w-[min(78vw,520px)]">
@@ -165,11 +174,15 @@ export function RoseHero({
           </RoseBoundary>
         ) : null}
       </div>
-      <div ref={copyRef} className="absolute inset-x-0 bottom-[max(5.5rem,7vh)] z-[4] px-5 text-center">
-        <h1 ref={titleRef} className="hero-title font-display text-[clamp(2.4rem,12vw,8.4rem)] leading-[0.86] font-medium tracking-[-0.045em] text-[#F3ECE6]">
-          {content.title}
+      <div ref={copyRef} className="absolute inset-x-0 bottom-[max(6.25rem,11vh)] z-[4] px-6 text-center">
+        <h1 ref={titleRef} className="hero-title mx-auto font-display text-[clamp(2.8rem,9.5vw,6.6rem)] leading-[0.96] font-medium tracking-[-0.04em] text-[#F3ECE6] [text-shadow:0_12px_40px_rgba(7,6,10,0.85)]">
+          {heroTitleLines(content.title).map((line) => (
+            <span key={line} data-title-line className="block whitespace-nowrap">
+              {line}
+            </span>
+          ))}
         </h1>
-        <p ref={subRef} className="hero-sub mx-auto mt-5 max-w-[18rem] font-display text-[clamp(1.25rem,3.4vw,1.85rem)] leading-snug font-medium italic text-[rgba(243,236,230,0.72)] md:max-w-md">
+        <p ref={subRef} className="hero-sub mx-auto mt-6 max-w-[24rem] font-display text-[clamp(1.15rem,2.8vw,1.5rem)] leading-relaxed font-medium italic text-[rgba(243,236,230,0.9)]">
           {content.subtitle}
         </p>
         <p className="mt-8 font-sans text-[0.68rem] tracking-[0.42em] text-[#E8C39E]/80 uppercase">

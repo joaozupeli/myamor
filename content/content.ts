@@ -80,9 +80,9 @@ export const content = {
     {
       date: "",
       title: "Nossos dates",
-      text: "Eu amava sair com você. Naquele dia no Poço Leite pedimos contra-filé no espeto, chegou um espetão enorme, e a gente sentou lá fora com aquela maionese que a gente amava.",
+      text: "Eu amava sair com você. Naquele dia no Posto Leite pedimos contra-filé no espeto, chegou um espetão enorme, e a gente sentou lá fora com aquela maionese que a gente amava.",
       image: "/photos/9.jpg",
-      caption: "Relacionamento sério: eu, você e a maionese do Poço Leite. 🍖",
+      caption: "Relacionamento sério: eu, você e a maionese do Posto Leite. 🍖",
     },
     {
       date: "",

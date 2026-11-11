@@ -289,20 +289,20 @@ em, .is-italic { font-style: italic; }
 
 .hero-title {
   margin: 0 auto;
-  max-width: min(9ch, 100%);
+  max-width: 92vw;
   font-family: var(--font-display), "Times New Roman", serif;
   font-weight: 500;
-  font-size: clamp(2.4rem, 12vw, 8.4rem);
-  line-height: 0.86;
+  font-size: clamp(2.8rem, 9.5vw, 6.6rem);
+  line-height: 0.96;
   letter-spacing: -0.04em;
 }
 
 .hero-letter { display: inline-block; }
 .hero-sub {
-  margin: 1.1rem auto 0;
-  max-width: 18rem;
-  color: rgba(243, 236, 230, 0.66);
-  font-size: 0.98rem;
+  margin: 1.45rem auto 0;
+  max-width: 24rem;
+  color: rgba(243, 236, 230, 0.9);
+  font-size: clamp(1.15rem, 2.8vw, 1.5rem);
   line-height: 1.6;
 }
 
@@ -651,7 +651,7 @@ html.reduced .scroll-hint span { animation: none; }
   .is-left .chapter-body { grid-column: 1; grid-row: 1; justify-self: end; }
   .is-right .chapter-body { grid-column: 3; grid-row: 1; }
   .chapter-title { font-size: clamp(3.2rem, 4.4vw, 5.4rem); }
-  .hero-sub { font-size: 1.15rem; max-width: 24rem; }
+  .hero-sub { font-size: 1.35rem; max-width: 28rem; }
   .letter { gap: 0.7rem; }
 }
 
@@ -802,9 +802,9 @@ html.reduced .memory-tilt { transition: transform 0.7s cubic-bezier(0.22, 1, 0.3
 @media (max-width: 720px) {
   .hero-title {
     max-width: 92vw;
-    font-size: clamp(2.5rem, 13vw, 3.8rem);
+    font-size: clamp(2.7rem, 11vw, 4.1rem);
   }
-  .hero-sub { font-size: 1.12rem; max-width: 18rem; }
+  .hero-sub { font-size: 1.12rem; max-width: 20rem; }
   .descent-line {
     top: 66%;
     width: min(16rem, 88vw);
